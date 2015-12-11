@@ -1,17 +1,13 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Lib
     ( parseArgs
     ) where
 
-import Control.Lens
 import Control.Monad
-import Data.Aeson.Lens (_String, key)
-import qualified Network.Wreq as WQ
+import Monitor
 import System.Console.GetOpt
 import System.Environment
 import System.Exit
 import System.IO
-import qualified Data.Text.IO as T
 
 data Options = Options { optVerbose :: Bool }
 
@@ -46,6 +42,5 @@ parseArgs =
       let (actions, nonOptions, errors) = getOpt RequireOrder options args
       opts <- foldl (>>=) (return startOptions) actions
       let Options { optVerbose = verbose } = opts
-      r <- WQ.get "http://httpbin.org/get"
-      T.putStrLn (r ^. WQ.responseBody . key "url" . _String)
       when verbose (hPutStrLn stderr "Starting in verbose mode...")
+      monitorServers verbose

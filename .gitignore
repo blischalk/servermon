@@ -1,4 +1,4 @@
 .stack-work
 .stack-work/*
-config/servers.yml
+config/servers.yaml
 bin/run

@@ -1,0 +1,7 @@
+app:
+  servers:
+    - name: App Name Here
+      url: "http://monitoring-url-here.com/whatever"
+      statusKeys:
+        - displayName: SomeService
+          jName: keyInJsonResponse
