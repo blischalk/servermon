@@ -1,3 +1,4 @@
-# Servermon:
+# Servermon
 
-An application to monitor our webservers
+Command line server monitor written in Haskell
+
