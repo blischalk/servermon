@@ -4,7 +4,8 @@ getConfig
 , JsonResponse(..)
 , AppName(..)
 , StatusKey(..)
-, AppMonitor(..)
+, SSAppMonitor(..)
+, MSAppMonitor(..)
 , MyConfig(..)
 , AppConfig(..)) where
 
@@ -16,7 +17,6 @@ import qualified Network.Wreq as WQ
 import GHC.Generics
 import System.Environment
 
-type AppURLList   = [AppMonitor]
 type AppName      = String
 type AppUrl       = String
 type DisplayName  = String
@@ -27,17 +27,25 @@ data StatusKey    = StatusKey { displayName :: DisplayName
                               , jName       :: JsonName
                               } deriving (Show, Generic)
 
-data AppMonitor  = AppMonitor { name       :: AppName
-                              , url        :: AppUrl
-                              , statusKeys :: [StatusKey]
-                              } deriving (Show, Generic)
+data MSAppMonitor = MSAppMonitor { msName       :: AppName
+                                 , msUrl        :: AppUrl
+                                 , msStatusKeys :: [StatusKey]
+                                 } deriving (Show, Generic)
+
+data SSAppMonitor = SSAppMonitor { ssName :: AppName
+                                 , ssUrl  :: AppUrl
+                                 } deriving (Show, Generic)
 
 data MyConfig = MyConfig { app :: AppConfig } deriving (Show, Generic)
 
-data AppConfig = AppConfig { servers :: [AppMonitor] } deriving (Show, Generic)
+data AppConfig = AppConfig { ssServers :: [SSAppMonitor]
+                           , msServers :: [MSAppMonitor]
+                           } deriving (Show, Generic)
 
-instance FromJSON AppMonitor
-instance ToJSON AppMonitor
+instance FromJSON SSAppMonitor
+instance ToJSON SSAppMonitor
+instance FromJSON MSAppMonitor
+instance ToJSON MSAppMonitor
 instance FromJSON StatusKey
 instance ToJSON StatusKey
 instance FromJSON MyConfig

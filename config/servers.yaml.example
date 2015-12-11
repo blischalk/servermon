@@ -1,7 +1,12 @@
 app:
-  servers:
-    - name: App Name Here
-      url: "http://monitoring-url-here.com/whatever"
-      statusKeys:
-        - displayName: SomeService
-          jName: keyInJsonResponse
+  msServers:
+    - msName: Multiple Service App Name
+      msUrl: "http://some-url/path"
+      msStatusKeys:
+        - displayName: Elasticsearch
+          jName: elasticsearch
+        - displayName: Elasticache
+          jName: elasticache
+  ssServers:
+    - ssName: Some App Name
+      ssUrl: "http://some-url/path"
