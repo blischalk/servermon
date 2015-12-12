@@ -30,22 +30,31 @@ printStatus r n (StatusKey dn jn) =
     do
       setSGR [SetColor Foreground Vivid White]
       putStr $ n ++ " " ++ dn ++ " is: "
-      setSGR [SetColor Foreground Vivid Green]
-      T.putStrLn (r ^. WQ.responseBody . key jn . _String)
+      let body = (r ^. WQ.responseBody . key jn . _String)
+          color = case body of
+                    "OK"      -> Green
+                    otherwise -> Red
+      setSGR [SetColor Foreground Vivid color]
+      T.putStrLn body
 
 printCode :: JsonResponse -> AppName -> IO ()
 printCode r n =
     do
       setSGR [SetColor Foreground Vivid White]
       putStr $ n ++ " is: "
-      setSGR [SetColor Foreground Vivid Green]
-      Prelude.putStrLn (show (r ^. WQ.responseStatus . WQ.statusCode))
+      let code = (r ^. WQ.responseStatus . WQ.statusCode)
+          color = case code of
+                    200       -> Green
+                    otherwise -> Red
+      setSGR [SetColor Foreground Vivid color]
+      Prelude.putStrLn (show code)
 
 monitorServers :: Verbosity -> IO ()
 monitorServers v =
     do
       cfg <- getConfig
-      mapM_ writeResponse $ (ssServers . app) cfg
-      mapM_ writeResponse $ (msServers . app) cfg
+      let a = map CSSAppMonitor $ (ssServers . app) cfg
+          b = map CMSAppMonitor $ (msServers . app) cfg
+      mapM_ writeResponse $ a ++ b
       threadDelay 5000000
       monitorServers v
