@@ -50,20 +50,25 @@ printCode r n =
       setSGR [SetColor Foreground Vivid color]
       Prelude.putStrLn (show code)
 
-monitorServers :: Verbosity -> IO ()
-monitorServers v =
-    do
+getAndPrintServerStatus :: IO ()
+getAndPrintServerStatus = do
       cfg <- getConfig
-      t1 <- getCurrentTime
-      setSGR [SetColor Foreground Vivid White]
-      putStrLn $ "Monitoring apps. Starting pings at: " ++ (show t1)
-
       mapM_ writeResponse $ (ssServers . app) cfg
       mapM_ writeResponse $ (msServers . app) cfg
 
+outWTime v = do
+      t1 <- getCurrentTime
+      setSGR [SetColor Foreground Vivid White]
+      putStrLn $ "Monitoring apps. Starting pings at: " ++ (show t1)
+      v
       t2 <- getCurrentTime
       setSGR [SetColor Foreground Vivid White]
       putStrLn $ "Finished pings at: " ++ (show t2)
       putStrLn $ replicate 100 '-'
+
+monitorServers :: Verbosity -> IO ()
+monitorServers v =
+    do
+      outWTime getAndPrintServerStatus
       threadDelay 5000000
       monitorServers v
