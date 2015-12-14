@@ -23,6 +23,7 @@ library
                      , bytestring
                      , lens
                      , lens-aeson
+                     , monad-parallel
                      , text
                      , time
                      , wreq

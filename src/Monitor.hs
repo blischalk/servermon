@@ -2,6 +2,7 @@
 module Monitor (monitorServers) where
 import Config
 import Control.Concurrent
+import qualified Control.Monad.Parallel as MP
 import Control.Lens
 import Data.Aeson.Lens (_String, key)
 import Data.Time
@@ -53,8 +54,8 @@ printCode r n =
 getAndPrintServerStatus :: IO ()
 getAndPrintServerStatus = do
       cfg <- getConfig
-      mapM_ writeResponse $ (ssServers . app) cfg
-      mapM_ writeResponse $ (msServers . app) cfg
+      MP.mapM_ writeResponse $ (ssServers . app) cfg
+      MP.mapM_ writeResponse $ (msServers . app) cfg
 
 outWTime :: IO () -> IO ()
 outWTime v = do
