@@ -4,6 +4,7 @@ import Config
 import Control.Concurrent
 import Control.Lens
 import Data.Aeson.Lens (_String, key)
+import Data.Time
 import qualified Data.Text.IO as T
 import qualified Network.Wreq as WQ
 import System.Console.ANSI
@@ -53,8 +54,16 @@ monitorServers :: Verbosity -> IO ()
 monitorServers v =
     do
       cfg <- getConfig
-      let a = map CSSAppMonitor $ (ssServers . app) cfg
-          b = map CMSAppMonitor $ (msServers . app) cfg
-      mapM_ writeResponse $ a ++ b
+      t1 <- getCurrentTime
+      setSGR [SetColor Foreground Vivid White]
+      putStrLn $ "Monitoring apps. Starting pings at: " ++ (show t1)
+
+      mapM_ writeResponse $ (ssServers . app) cfg
+      mapM_ writeResponse $ (msServers . app) cfg
+
+      t2 <- getCurrentTime
+      setSGR [SetColor Foreground Vivid White]
+      putStrLn $ "Finished pings at: " ++ (show t2)
+      putStrLn $ replicate 100 '-'
       threadDelay 5000000
       monitorServers v

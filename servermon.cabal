@@ -24,6 +24,7 @@ library
                      , lens
                      , lens-aeson
                      , text
+                     , time
                      , wreq
                      , yaml
                      , yaml-config
