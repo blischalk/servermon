@@ -56,6 +56,7 @@ getAndPrintServerStatus = do
       mapM_ writeResponse $ (ssServers . app) cfg
       mapM_ writeResponse $ (msServers . app) cfg
 
+outWTime :: IO () -> IO ()
 outWTime v = do
       t1 <- getCurrentTime
       setSGR [SetColor Foreground Vivid White]
