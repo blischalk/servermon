@@ -48,6 +48,9 @@ test-suite servermon-test
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:       base
+                     , test-framework
+                     , test-framework-hunit
+                     , HUnit
                      , servermon
                      , wreq
                      , lens
